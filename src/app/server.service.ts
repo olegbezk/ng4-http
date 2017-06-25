@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 
 @Injectable()
@@ -17,7 +18,7 @@ export class ServerService {
 
     getServers() {
         //noinspection TypeScriptValidateTypes
-        return this.http.get(this.BASE_URL)
+        return this.http.get('https://udemy-ng-http-dca15.firebaseio.com/data') // url without .json
             .map(
                 (response: Response) => {
                     const data = response.json();
@@ -25,6 +26,11 @@ export class ServerService {
                         server.name = "FETCHED_" + server.name;
                     }
                     return data;
+                }
+            )
+            .catch(
+                (error: Response) => {
+                    return Observable.throw('Something went wrong');
                 }
             );
     }
